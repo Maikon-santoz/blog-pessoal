@@ -17,6 +17,8 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @Entity
 @Table(name = "tb_usuarios")
 public class Usuario {
@@ -27,7 +29,8 @@ public class Usuario {
 
 	@NotNull(message = "O Atributo Nome é Obrigatório!")
 	private String nome;
-
+	
+	@Schema(example ="email@email.com.br")
 	@NotNull(message = "O Atributo Usuário é Obrigatório!")
 	@Email(message = "O Atributo Usuário deve ser um email válido!")
 	private String usuario;
@@ -42,12 +45,33 @@ public class Usuario {
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("usuario")
 	private List<postagem> postagem;
+	
+	
+	
 
 	
 
 	public Long getId() {
 		return this.id;
 	}
+
+	public Usuario(Long id, @NotNull(message = "O Atributo Nome é Obrigatório!") String nome,
+			@NotNull(message = "O Atributo Usuário é Obrigatório!") @Email(message = "O Atributo Usuário deve ser um email válido!") String usuario,
+			@NotBlank(message = "O Atributo Senha é Obrigatório!") @Size(min = 8, message = "A Senha deve ter no mínimo 8 caracteres") String senha,
+			@Size(max = 5000, message = "O link da foto não pode ser maior do que 5000 caracteres") String foto) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.usuario = usuario;
+		this.senha = senha;
+		this.foto = foto;
+		
+		
+	}
+
+	public Usuario() {
+	}
+
 
 	public void setId(Long id) {
 		this.id = id;
